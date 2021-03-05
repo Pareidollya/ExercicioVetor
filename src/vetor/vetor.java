@@ -18,21 +18,18 @@ public class vetor<T> {
         
     }
     public void adiciona(T elemento,int pos){ 
-        //tratar exceção tamanho
-
+        this.verificarPosição(pos);
         vetor[pos] = elemento;
         elementos++;
         
     }
     public T recupera(int pos){
-        if (pos>=tamanho){
-            throw new IllegalArgumentException("Posição invalida!");
-        }
-        return vetor[pos];
-        
+        this.verificarPosição(pos);
+        return vetor[pos];    
     }
+    
     public void adicionaInicio(T elemento){
-        //tratar exceção tamanho
+        this.redimencionar();//verificar se vetor
         Iterador Vit = new Iterador(vetor); 
         int count = 0;
         
@@ -47,7 +44,7 @@ public class vetor<T> {
         }  
     }
     public void adicionaFim(T elemento){ 
-        //tratar exceção e usar iterator 
+        this.redimencionar(); //nao sei usar iterator 
         int count = tamanho - 1;
         while (count >= 0){
             if (vetor[count] == null){
@@ -81,12 +78,8 @@ public class vetor<T> {
     }
     
    public void remove (int pos){
-       if (pos>=tamanho){
-            throw new IllegalArgumentException("Posição invalida!");
-        }
-       else if (pos < 0){
-           throw new IllegalArgumentException("Posição invalida!");
-       }
+       this.verificarPosição(pos);
+       
        if (this.existeDado(pos) == true && this.vazio() == false) {
            vetor[pos] = null;
            elementos--;
@@ -99,7 +92,10 @@ public class vetor<T> {
        
    }
     public void RemoveInicio(){
-        //tratar exceção tamanho
+        if(this.elementos == 0){
+            System.out.println("Vetor ja esta vazio");
+        }
+        
         Iterador Vit = new Iterador(vetor); 
         int count = 0;
         
@@ -116,8 +112,12 @@ public class vetor<T> {
      public int Tamanho(){
         return this.getElementos();
     }
+     
      public void Limpa(){
-        //tratar exceção tamanho
+        if (this.vazio()== true){
+            System.out.println("Vetor ja esta vazio");
+        }
+        else{
         Iterador Vit = new Iterador(vetor); 
         int count = 0;
         
@@ -128,10 +128,11 @@ public class vetor<T> {
             }
             count++;
         }
+        }
         System.out.println("vetor limpo");
     }
      
-     public void redimencionar(){
+     public void redimencionar(){ //tratar exceção quanto a posição ao tamanho do vetor  
          if (this.elementos == this.getTamanho()){
              T[] vetor2 = (T[]) new Object[this.vetor.length * 2];
             for (int i = 0; i < this.vetor.length;i++){
@@ -140,7 +141,17 @@ public class vetor<T> {
         System.out.println("Tamanho redimencionado!");
         this.vetor = vetor2;
      }
-    }   
+    }  
+     
+     public void verificarPosição(int pos){ //tratar exceção quanto a posição a se inserir
+         if (pos>=tamanho){
+            throw new IllegalArgumentException("Posição invalida!");
+        }
+       else if (pos < 0){
+           throw new IllegalArgumentException("Posição invalida!");
+       }
+
+     }
      
     public int getTamanho() {
         return vetor.length;
